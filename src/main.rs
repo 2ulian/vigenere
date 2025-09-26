@@ -1,12 +1,17 @@
 use std::io;
+
 fn main() {
-    let mut input: String = String::new();
+    let mut input_message: String = String::new();
+    let mut input_key: String = String::new();
 
-    println!("Quelle est le texte en clair ?");
+    println!("Entrer le message : ");
+    io::stdin().read_line(&mut input_message).unwrap();
 
-    io::stdin().read_line(&mut input).unwrap();
+    println!("Entrer la clé : ");
+    io::stdin().read_line(&mut input_key).unwrap();
 
-    input = input.trim().to_string();
+    input_message = input_message.trim().to_string().to_uppercase();
+    input_key = input_key.trim().to_string().to_uppercase();
 
-    println!("{:?}", input);
+    println!("{input_message} / {input_key}");
 }
