@@ -1,7 +1,20 @@
+use std::fs;
 use std::io;
 use std::path::Path;
 
 fn main() {
+    let text_file: String = fs::read_to_string(Path::new("data/text.txt")).unwrap();
+    let key_file: String = fs::read_to_string(Path::new("data/key.txt")).unwrap();
+    let text_file = text_file.trim().to_string();
+    let key_file = key_file.trim_end().to_string();
+    println!("Le texte sera: {text_file}");
+    println!("La clé sera: {key_file}");
+
+    //vigenere_cipher(input_message, input_key);
+    vigenere_cipher(text_file, key_file);
+}
+
+fn _input() -> (String, String) {
     let mut input_message: String = String::new();
     let mut input_key: String = String::new();
 
@@ -11,11 +24,9 @@ fn main() {
     println!("Entrer la clé : ");
     io::stdin().read_line(&mut input_key).unwrap();
 
-    // on trim car on considère qu'un espace en extremum de message n'est pas voulu
-    input_message = input_message.trim().to_string();
+    // on trim le message car on considère qu'un espace en extremum de message n'est pas voulu
+    (input_message.trim().to_string(), input_key.to_string())
     // on ne trim pas la clé car on peut vouloir un espace au début pour le chiffrement
-    input_key = input_key.to_string();
-    vigenere_cipher(input_message, input_key);
 }
 
 fn key_resize(message: String, mut key: String) -> String {
