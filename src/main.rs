@@ -1,4 +1,5 @@
 use std::io;
+use std::path::Path;
 
 fn main() {
     let mut input_message: String = String::new();
@@ -10,8 +11,10 @@ fn main() {
     println!("Entrer la clé : ");
     io::stdin().read_line(&mut input_key).unwrap();
 
+    // on trim car on considère qu'un espace en extremum de message n'est pas voulu
     input_message = input_message.trim().to_string();
-    input_key = input_key.trim().to_string();
+    // on ne trim pas la clé car on peut vouloir un espace au début pour le chiffrement
+    input_key = input_key.to_string();
     vigenere_cipher(input_message, input_key);
 }
 
@@ -40,7 +43,11 @@ fn char_to_num(c: char) -> u8 {
 }
 
 fn num_to_char(mut n: u8) -> char {
-    n = n % (b'~' - b' ' + 2) + b' ';
+    n = n % (b'~' - b' ' + 1) + b' ' - 1;
+    // sert a gérer le cas ou n mod 95 = 0
+    if n < b' ' {
+        n = n + b'~' - b' ' + 1;
+    }
     if n >= b'A' && n <= b'Z' {
         n.to_ascii_uppercase() as char
     } else {
@@ -56,8 +63,21 @@ fn encrypt(message: String, key: String) -> String {
     encrypted_message
 }
 
+fn de_encrypt(message: String, key: String) -> String {
+    let mut de_encrypted_message: String = String::new();
+    for (cm, ck) in message.chars().zip(key.chars()) {
+        de_encrypted_message.push(num_to_char(
+            // pour s'assurer qu'on n'a pas de nombre négatif
+            char_to_num(cm) + b'~' - b' ' + 1 - char_to_num(ck),
+        ));
+    }
+    de_encrypted_message
+}
+
 fn vigenere_cipher(message: String, mut key: String) {
     key = key_resize(message.clone(), key);
-    let message_crypted: String = encrypt(message.clone(), key);
+    let message_crypted: String = encrypt(message.clone(), key.clone());
+    let message_de_encrypted: String = de_encrypt(message_crypted.clone(), key);
     println!("{message_crypted}");
+    println!("repassage: {message_de_encrypted}");
 }
