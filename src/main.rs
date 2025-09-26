@@ -30,7 +30,7 @@ fn key_resize(message: String, mut key: String) -> String {
 }
 
 fn char_to_num(c: char) -> u8 {
-    let mut n: u8;
+    let n: u8;
     if c.is_ascii_uppercase() {
         n = c.to_ascii_uppercase() as u8;
     } else {
