@@ -30,11 +30,21 @@ fn key_resize(message: String, mut key: String) -> String {
 }
 
 fn char_to_num(c: char) -> u8 {
-    (c.to_ascii_lowercase() as u8) - b'a'
+    let mut n: u8;
+    if c.is_ascii_uppercase() {
+        n = c.to_ascii_uppercase() as u8;
+    } else {
+        n = c.to_ascii_lowercase() as u8;
+    }
+    n - b' '
 }
 
 fn num_to_char(n: u8) -> char {
-    (n % 26 + b'a').to_ascii_uppercase() as char
+    if n > b'A' && n < b'Z' {
+        (n % (b'~' - b' ') + b' ').to_ascii_uppercase() as char
+    } else {
+        (n % (b'~' - b' ') + b' ').to_ascii_lowercase() as char
+    }
 }
 
 fn encrypt(message: String, key: String) -> String {
@@ -49,4 +59,6 @@ fn vigenere_cipher(message: String, mut key: String) {
     key = key_resize(message.clone(), key);
     let message_crypted: String = encrypt(message.clone(), key);
     println!("{message_crypted}");
+    let t: char = num_to_char(33);
+    println!("{t}");
 }
