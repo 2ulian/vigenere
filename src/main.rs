@@ -10,8 +10,8 @@ fn main() {
     println!("Entrer la clé : ");
     io::stdin().read_line(&mut input_key).unwrap();
 
-    input_message = input_message.trim().to_string().to_uppercase();
-    input_key = input_key.trim().to_string().to_uppercase();
+    input_message = input_message.trim().to_string();
+    input_key = input_key.trim().to_string();
     vigenere_cipher(input_message, input_key);
 }
 
@@ -36,14 +36,15 @@ fn char_to_num(c: char) -> u8 {
     } else {
         n = c.to_ascii_lowercase() as u8;
     }
-    n - b' '
+    n - b' ' + 1
 }
 
-fn num_to_char(n: u8) -> char {
-    if n > b'A' && n < b'Z' {
-        (n % (b'~' - b' ') + b' ').to_ascii_uppercase() as char
+fn num_to_char(mut n: u8) -> char {
+    n = n % (b'~' - b' ' + 2) + b' ';
+    if n >= b'A' && n <= b'Z' {
+        n.to_ascii_uppercase() as char
     } else {
-        (n % (b'~' - b' ') + b' ').to_ascii_lowercase() as char
+        n.to_ascii_lowercase() as char
     }
 }
 
@@ -59,6 +60,4 @@ fn vigenere_cipher(message: String, mut key: String) {
     key = key_resize(message.clone(), key);
     let message_crypted: String = encrypt(message.clone(), key);
     println!("{message_crypted}");
-    let t: char = num_to_char(33);
-    println!("{t}");
 }
