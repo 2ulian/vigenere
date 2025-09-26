@@ -86,9 +86,9 @@ fn de_encrypt(message: String, key: String) -> String {
 }
 
 fn vigenere_cipher(message: String, mut key: String) {
-    key = key_resize(message.clone(), key);
+    key = key_resize(message.clone(), key.clone());
     let message_crypted: String = encrypt(message.clone(), key.clone());
-    let message_de_encrypted: String = de_encrypt(message_crypted.clone(), key);
+    let message_de_encrypted: String = de_encrypt(message_crypted.clone(), key.clone());
     println!("{message_crypted}");
     println!("repassage: {message_de_encrypted}");
 }
