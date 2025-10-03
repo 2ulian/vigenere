@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::fs;
 use std::io;
 use std::path::Path;
@@ -91,4 +92,58 @@ fn vigenere_cipher(message: String, mut key: String) {
     let message_de_encrypted: String = de_encrypt(message_crypted.clone(), key.clone());
     println!("{message_crypted}");
     println!("repassage: {message_de_encrypted}");
+    kasiski(message_crypted);
+}
+
+fn kasiski(message: String) {
+    let l: usize = message.len();
+    let mut map: HashMap<String, Vec<u32>> = HashMap::new();
+    let mut start: usize = 0;
+    let mut length: usize = 2;
+
+    while length <= l / 2 {
+        while start + length <= l {
+            let slice: String = message[start..start + length].to_string();
+            map.entry(slice).or_insert(Vec::new()).push(start as u32);
+            start += 1;
+        }
+        length += 1;
+    }
+
+    // nettoyage, au moins trois occurence du motif
+    for (key, value) in map.clone() {
+        if value.len() < 3 {
+            map.remove(&key);
+        }
+    }
+
+    let mut c: usize = 0;
+    let mut pgcds: Vec<u32> = Vec::new();
+
+    for value in map.clone().values() {
+        let mut distance: Vec<u32> = Vec::new();
+        while c + 1 < value.len() {
+            distance.push(value.get(c + 1).copied().unwrap() - value.get(c).copied().unwrap());
+            c += 1;
+        }
+        if distance.len() == 0 {
+            break;
+        }
+        let mut pgcd = distance.get(0).copied().unwrap();
+        for i in 0..distance.len() {
+            pgcd = euclide(pgcd, distance.get(i + 1).copied().unwrap());
+        }
+        pgcds.push(pgcd);
+    }
+    print!("Les tailles de clé probable sont: {pgcds:?}");
+}
+
+fn euclide(mut a: u32, mut b: u32) -> u32 {
+    let mut r = a % b;
+    while r != 0 {
+        a = b;
+        b = r;
+        r = a % b;
+    }
+    b
 }
