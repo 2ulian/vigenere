@@ -58,7 +58,9 @@ fn build_repet_table(message: &str) -> Vec<(String, usize)> {
 }
 
 pub fn kasiski(message: &str) {
-    let repet = build_repet_table(message);
+    // Filtrer le message pour ne garder que les caractères ASCII imprimables
+    let filtered: String = message.chars().filter(|&c| c >= ' ' && c <= '~').collect();
+    let repet = build_repet_table(&filtered);
 
     if repet.is_empty() {
         println!("Echantillon trop petit pour Kasiski");
