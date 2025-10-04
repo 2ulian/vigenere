@@ -63,7 +63,10 @@ fn input_message_and_key() -> io::Result<(String, String)> {
     println!("Entrer la clé : ");
     io::stdin().read_line(&mut input_key)?;
 
-    Ok((input_message.trim().to_string(), input_key.trim().to_string())) // Both message and key are trimmed to remove extra spaces and newlines
+    Ok((
+        input_message.trim().to_string(),
+        input_key.trim().to_string(),
+    )) // Both message and key are trimmed to remove extra spaces and newlines
 }
 
 fn run_vigenere_demo(message: &str, key: &str) {
