@@ -1,5 +1,13 @@
 use std::collections::HashMap;
 
+/// Calcule le plus grand commun diviseur (PGCD) de deux entiers.
+///
+/// # Arguments
+/// a - Premier entier.
+/// b - Deuxième entier.
+///
+/// # Retour
+/// Le PGCD de `a` et `b`.
 pub fn compute_gcd(mut a: usize, mut b: usize) -> usize {
     while b != 0 {
         let r = a % b;
@@ -9,6 +17,13 @@ pub fn compute_gcd(mut a: usize, mut b: usize) -> usize {
     a
 }
 
+/// Retourne la liste des diviseurs d'un entier supérieur ou égal à 2.
+///
+/// # Arguments
+/// n - L'entier dont on veut les diviseurs.
+///
+/// # Retour
+/// Un vecteur contenant les diviseurs de `n`.
 fn divisors(n: usize) -> Vec<usize> {
     let mut out = Vec::new();
     if n >= 2 {
@@ -30,6 +45,13 @@ fn divisors(n: usize) -> Vec<usize> {
     out
 }
 
+/// Construit la table des répétitions de fragments dans le message.
+///
+/// # Arguments
+/// message - Le texte à analyser.
+///
+/// # Retour
+/// Un vecteur de tuples contenant le fragment répété et la distance entre deux occurrences.
 fn build_repet_table(message: &str) -> Vec<(String, usize)> {
     let bytes = message.as_bytes();
     let l = bytes.len();
@@ -57,6 +79,11 @@ fn build_repet_table(message: &str) -> Vec<(String, usize)> {
     repet
 }
 
+/// Effectue l'analyse Kasiski sur un message chiffré pour estimer la longueur de la clé.
+/// Affiche les tailles de clé possibles ou un message d'erreur si l'échantillon est trop petit.
+///
+/// # Arguments
+/// message - Le texte chiffré à analyser.
 pub fn kasiski(message: &str) {
     // Filtrer le message pour ne garder que les caractères ASCII imprimables
     let filtered: String = message.chars().filter(|&c| c >= ' ' && c <= '~').collect();
