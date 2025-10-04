@@ -59,6 +59,14 @@ fn get_user_choice() -> u8 {
 fn files_message_and_key(text_path: &str, key_path: &str) -> io::Result<(String, String)> {
     let text = fs::read_to_string(Path::new(text_path))?.trim().to_string();
     let key = fs::read_to_string(Path::new(key_path))?.trim().to_string();
+
+    if text.is_empty() || key.is_empty() {
+        return Err(io::Error::new(
+            io::ErrorKind::InvalidData,
+            "Le texte ou la clé dans les fichiers ne doit pas être vide.",
+        ));
+    }
+
     Ok((text, key))
 }
 
@@ -80,11 +88,15 @@ fn input_message_and_key() -> io::Result<(String, String)> {
     let mut input_message: String = String::new();
     let mut input_key: String = String::new();
 
-    println!("Entrer le message : ");
-    io::stdin().read_line(&mut input_message)?;
+    while input_message.trim().is_empty() {
+        println!("Entrer le message (il ne doit pas être vide) : ");
+        io::stdin().read_line(&mut input_message)?;
+    }
 
-    println!("Entrer la clé : ");
-    io::stdin().read_line(&mut input_key)?;
+    while input_key.trim().is_empty() {
+        println!("Entrer la clé (il ne doit pas être vide) : ");
+        io::stdin().read_line(&mut input_key)?;
+    }
 
     Ok((
         input_message.trim().to_string(),

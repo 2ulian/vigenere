@@ -22,13 +22,11 @@ pub fn resize_key_to_message(message: &str, key: &str) -> String {
 /// # Retour
 /// Un u8 représentant la valeur numérique Vigenère du caractère.
 pub const fn char_to_vigenere_num(c: char) -> u8 {
-    let n: u8;
     if c.is_ascii_uppercase() {
-        n = c.to_ascii_uppercase() as u8;
+        c.to_ascii_uppercase() as u8 - b' ' + 1
     } else {
-        n = c.to_ascii_lowercase() as u8;
+        c.to_ascii_lowercase() as u8 - b' ' + 1
     }
-    n - b' ' + 1
 }
 
 /// Convertit une valeur numérique Vigenère en son caractère correspondant.
