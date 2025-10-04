@@ -6,15 +6,23 @@ mod kasiski;
 mod vigenere;
 
 fn main() -> io::Result<()> {
-    let text_file: String = fs::read_to_string(Path::new("data/text.txt"))?;
-    let key_file: String = fs::read_to_string(Path::new("data/key.txt"))?;
-    let text_file = text_file.trim().to_string();
-    let key_file = key_file.trim_end().to_string();
-    println!("Le texte sera: {text_file}");
-    println!("La clé sera: {key_file}");
-
-    run_vigenere_demo(&text_file, &key_file);
+    let (text, key) = read_and_clean_files("data/text.txt", "data/key.txt")?;
+    display_info(&text, &key);
+    run_vigenere_demo(&text, &key);
     Ok(())
+}
+
+fn read_and_clean_files(text_path: &str, key_path: &str) -> io::Result<(String, String)> {
+    let text = fs::read_to_string(Path::new(text_path))?.trim().to_string();
+    let key = fs::read_to_string(Path::new(key_path))?
+        .trim_end()
+        .to_string();
+    Ok((text, key))
+}
+
+fn display_info(text: &str, key: &str) {
+    println!("Le texte sera: {text}");
+    println!("La clé sera: {key}");
 }
 
 fn _read_message_and_key() -> io::Result<(String, String)> {
@@ -32,9 +40,11 @@ fn _read_message_and_key() -> io::Result<(String, String)> {
 
 fn run_vigenere_demo(message: &str, key: &str) {
     let key = vigenere::resize_key_to_message(message, key);
-    let message_crypted: String = vigenere::vigenere_encrypt(message, &key);
-    let message_de_encrypted: String = vigenere::vigenere_decrypt(&message_crypted, &key);
-    println!("{message_crypted}");
-    println!("repassage: {message_de_encrypted}");
-    kasiski::kasiski(&message_crypted);
+    let encrypted_message: String = vigenere::vigenere_encrypt(message, &key);
+    let decrypted_message: String = vigenere::vigenere_decrypt(&encrypted_message, &key);
+    println!("Message chiffré : {encrypted_message}");
+    println!(
+        "Message déchiffré (ceci est le texte original retrouvé après déchiffrement avec la clé) : {decrypted_message}"
+    );
+    kasiski::kasiski(&encrypted_message);
 }

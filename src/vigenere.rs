@@ -1,5 +1,3 @@
-// Vigenère cipher module
-
 pub fn resize_key_to_message(message: &str, key: &str) -> String {
     if key.is_empty() {
         return String::new();
@@ -50,4 +48,3 @@ pub fn vigenere_decrypt(message: &str, key: &str) -> String {
     }
     de_encrypted_message
 }
-

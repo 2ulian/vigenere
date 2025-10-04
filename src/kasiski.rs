@@ -51,4 +51,3 @@ pub fn compute_gcd(mut a: usize, mut b: usize) -> usize {
     }
     a
 }
-
