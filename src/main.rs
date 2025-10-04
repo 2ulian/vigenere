@@ -12,11 +12,11 @@ fn main() -> io::Result<()> {
     println!("La clé sera: {key_file}");
 
     //vigenere_cipher(input_message, input_key);
-    vigenere_cipher(&text_file, &key_file);
+    run_vigenere_demo(&text_file, &key_file);
     Ok(())
 }
 
-fn _input() -> io::Result<(String, String)> {
+fn _read_message_and_key() -> io::Result<(String, String)> {
     let mut input_message: String = String::new();
     let mut input_key: String = String::new();
 
@@ -31,7 +31,7 @@ fn _input() -> io::Result<(String, String)> {
     // on ne trim pas la clé car on peut vouloir un espace au début pour le chiffrement
 }
 
-fn key_resize(message: &str, key: &str) -> String {
+fn resize_key_to_message(message: &str, key: &str) -> String {
     if key.is_empty() {
         return String::new();
     }
@@ -39,7 +39,7 @@ fn key_resize(message: &str, key: &str) -> String {
     key.chars().cycle().take(message.len()).collect()
 }
 
-fn char_to_num(c: char) -> u8 {
+fn char_to_vigenere_num(c: char) -> u8 {
     let n: u8;
     if c.is_ascii_uppercase() {
         n = c.to_ascii_uppercase() as u8;
@@ -49,7 +49,7 @@ fn char_to_num(c: char) -> u8 {
     n - b' ' + 1
 }
 
-fn num_to_char(mut n: u8) -> char {
+fn vigenere_num_to_char(mut n: u8) -> char {
     n = n % (b'~' - b' ' + 1) + b' ' - 1;
     // sert a gérer le cas ou n mod 95 = 0
     if n < b' ' {
@@ -62,35 +62,37 @@ fn num_to_char(mut n: u8) -> char {
     }
 }
 
-fn encrypt(message: &str, key: &str) -> String {
+fn vigenere_encrypt(message: &str, key: &str) -> String {
     let mut encrypted_message: String = String::new();
     for (cm, ck) in message.chars().zip(key.chars()) {
-        encrypted_message.push(num_to_char(char_to_num(cm) + char_to_num(ck)));
+        encrypted_message.push(vigenere_num_to_char(
+            char_to_vigenere_num(cm) + char_to_vigenere_num(ck),
+        ));
     }
     encrypted_message
 }
 
-fn de_encrypt(message: &str, key: &str) -> String {
+fn vigenere_decrypt(message: &str, key: &str) -> String {
     let mut de_encrypted_message: String = String::new();
     for (cm, ck) in message.chars().zip(key.chars()) {
-        de_encrypted_message.push(num_to_char(
+        de_encrypted_message.push(vigenere_num_to_char(
             // pour s'assurer qu'on n'a pas de nombre négatif
-            char_to_num(cm) + b'~' - b' ' + 1 - char_to_num(ck),
+            char_to_vigenere_num(cm) + b'~' - b' ' + 1 - char_to_vigenere_num(ck),
         ));
     }
     de_encrypted_message
 }
 
-fn vigenere_cipher(message: &str, key: &str) {
-    let key = key_resize(message, key);
-    let message_crypted: String = encrypt(message, &key);
-    let message_de_encrypted: String = de_encrypt(&message_crypted, &key);
+fn run_vigenere_demo(message: &str, key: &str) {
+    let key = resize_key_to_message(message, key);
+    let message_crypted: String = vigenere_encrypt(message, &key);
+    let message_de_encrypted: String = vigenere_decrypt(&message_crypted, &key);
     println!("{message_crypted}");
     println!("repassage: {message_de_encrypted}");
     kasiski(&message_crypted);
 }
 
-pub fn kasiski(message: &str) {
+fn kasiski(message: &str) {
     let bytes = message.as_bytes();
     let l = bytes.len();
 
@@ -110,7 +112,7 @@ pub fn kasiski(message: &str) {
     let mut pgcds: Vec<usize> = Vec::new();
     for positions in map.values() {
         let distances: Vec<usize> = positions.windows(2).map(|w| w[1] - w[0]).collect();
-        if let Some(g) = distances.iter().copied().reduce(gcd) {
+        if let Some(g) = distances.iter().copied().reduce(compute_gcd) {
             if g > 1 {
                 pgcds.push(g);
             }
@@ -132,7 +134,7 @@ pub fn kasiski(message: &str) {
     );
 }
 
-fn gcd(mut a: usize, mut b: usize) -> usize {
+fn compute_gcd(mut a: usize, mut b: usize) -> usize {
     while b != 0 {
         let r = a % b;
         a = b;
