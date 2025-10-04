@@ -1,51 +1,4 @@
-// Kasiski analysis module
 use std::collections::HashMap;
-
-pub fn kasiski(message: &str) {
-    let bytes = message.as_bytes();
-    let l = bytes.len();
-
-    // Collect positions of all patterns of length >= 3
-    let mut map: HashMap<&[u8], Vec<usize>> = HashMap::new();
-    for length in 3..=l / 2 {
-        for start in 0..=l - length {
-            let slice = &bytes[start..start + length];
-            map.entry(slice).or_default().push(start);
-        }
-    }
-
-    // Keep only patterns with ≥ 3 occurrences
-    map.retain(|_, v| v.len() >= 3);
-
-    // Distances between successive occurrences + GCD of these distances
-    let mut pgcds: Vec<usize> = Vec::new();
-    for positions in map.values() {
-        let distances: Vec<usize> = positions.windows(2).map(|w| w[1] - w[0]).collect();
-        if let Some(g) = distances.iter().copied().reduce(compute_gcd) {
-            if g > 1 {
-                pgcds.push(g);
-            }
-        }
-    }
-
-    // Count the most probable factors
-    let mut freq: HashMap<usize, usize> = HashMap::new();
-    for g in pgcds {
-        *freq.entry(g).or_insert(0) += 1;
-    }
-
-    // Display sorted by decreasing frequency
-    let mut items: Vec<(usize, usize)> = freq.into_iter().collect();
-    items.sort_by(|a, b| b.1.cmp(&a.1));
-    if items.is_empty() {
-        println!("Estimation impossible : l'échantillon est trop petit.");
-    } else {
-        println!(
-            "Tailles des clés les plus probables (de la plus probable à la moins probable) : {:?}",
-            items.iter().map(|(k, _)| *k).collect::<Vec<usize>>()
-        );
-    }
-}
 
 pub fn compute_gcd(mut a: usize, mut b: usize) -> usize {
     while b != 0 {
@@ -54,4 +7,90 @@ pub fn compute_gcd(mut a: usize, mut b: usize) -> usize {
         b = r;
     }
     a
+}
+
+fn divisors(n: usize) -> Vec<usize> {
+    let mut out = Vec::new();
+    if n >= 2 {
+        let mut d = 2usize;
+        while d * d <= n {
+            if n % d == 0 {
+                out.push(d);
+                let q = n / d;
+                if q != d {
+                    out.push(q);
+                }
+            }
+            d += 1;
+        }
+        out.push(n);
+        out.sort_unstable();
+        out.dedup();
+    }
+    out
+}
+
+fn build_repet_table(message: &str) -> Vec<(String, usize)> {
+    let bytes = message.as_bytes();
+    let l = bytes.len();
+
+    let mut map: HashMap<&[u8], Vec<usize>> = HashMap::new();
+    for length in 3..=l.saturating_div(2).max(3) {
+        if length > l {
+            break;
+        }
+        for start in 0..=l - length {
+            let slice = &bytes[start..start + length];
+            map.entry(slice).or_default().push(start);
+        }
+    }
+
+    map.retain(|_, v| v.len() >= 2);
+
+    let mut repet: Vec<(String, usize)> = Vec::new();
+    for (frag, positions) in map.into_iter() {
+        for w in positions.windows(2) {
+            let d = w[1] - w[0];
+            repet.push((String::from_utf8(frag.to_vec()).unwrap(), d));
+        }
+    }
+    repet
+}
+
+pub fn kasiski(message: &str) {
+    let repet = build_repet_table(message);
+
+    if repet.is_empty() {
+        println!("Echantillon trop petit pour Kasiski");
+        return;
+    }
+
+    let first_dist = repet[0].1;
+    let mut candidats = divisors(first_dist);
+
+    for &(_, dist) in repet.iter().skip(1) {
+        let mut temp: Vec<usize> = Vec::new();
+        for &cand in &candidats {
+            let g = compute_gcd(cand, dist);
+            if g > 1 {
+                temp.push(g);
+            }
+        }
+
+        temp.sort_unstable();
+        temp.dedup();
+
+        if !temp.is_empty() {
+            candidats = temp;
+        }
+    }
+
+    candidats.sort_unstable();
+    candidats.dedup();
+
+    if candidats.is_empty() {
+        println!("?");
+    } else {
+        println!("Tailles de clé possibles : {:?}", candidats);
+    }
 }
