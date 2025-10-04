@@ -72,15 +72,11 @@ pub fn vigenere_crypt(message: &str, key: &str, mode: VigenereMode) -> String {
             let ck = key_iter.next().unwrap();
             let res = match mode {
                 VigenereMode::Encrypt => {
-                    vigenere_num_to_char(
-                        char_to_vigenere_num(cm) + char_to_vigenere_num(ck),
-                    )
+                    vigenere_num_to_char(char_to_vigenere_num(cm) + char_to_vigenere_num(ck))
                 }
-                VigenereMode::Decrypt => {
-                    vigenere_num_to_char(
-                        char_to_vigenere_num(cm) + b'~' - b' ' + 1 - char_to_vigenere_num(ck),
-                    )
-                }
+                VigenereMode::Decrypt => vigenere_num_to_char(
+                    char_to_vigenere_num(cm) + b'~' - b' ' + 1 - char_to_vigenere_num(ck),
+                ),
             };
             result_message.push(res);
         } else {
