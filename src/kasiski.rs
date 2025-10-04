@@ -8,7 +8,7 @@ use std::collections::HashMap;
 ///
 /// # Retour
 /// Le PGCD de `a` et `b`.
-pub fn compute_gcd(mut a: usize, mut b: usize) -> usize {
+pub const fn compute_gcd(mut a: usize, mut b: usize) -> usize {
     while b != 0 {
         let r = a % b;
         a = b;
@@ -26,6 +26,7 @@ pub fn compute_gcd(mut a: usize, mut b: usize) -> usize {
 /// Un vecteur contenant les diviseurs de `n`.
 fn divisors(n: usize) -> Vec<usize> {
     let mut out = Vec::new();
+
     if n >= 2 {
         let mut d = 2usize;
         while d * d <= n {
@@ -55,8 +56,8 @@ fn divisors(n: usize) -> Vec<usize> {
 fn build_repet_table(message: &str) -> Vec<(String, usize)> {
     let bytes = message.as_bytes();
     let l = bytes.len();
-
     let mut map: HashMap<&[u8], Vec<usize>> = HashMap::new();
+
     for length in 3..=l.saturating_div(2).max(3) {
         if length > l {
             break;
@@ -70,12 +71,14 @@ fn build_repet_table(message: &str) -> Vec<(String, usize)> {
     map.retain(|_, v| v.len() >= 2);
 
     let mut repet: Vec<(String, usize)> = Vec::new();
-    for (frag, positions) in map.into_iter() {
+
+    for (frag, positions) in map {
         for w in positions.windows(2) {
             let d = w[1] - w[0];
             repet.push((String::from_utf8(frag.to_vec()).unwrap(), d));
         }
     }
+
     repet
 }
 
@@ -86,7 +89,10 @@ fn build_repet_table(message: &str) -> Vec<(String, usize)> {
 /// message - Le texte chiffré à analyser.
 pub fn kasiski(message: &str) {
     // Filtrer le message pour ne garder que les caractères ASCII imprimables
-    let filtered: String = message.chars().filter(|&c| c >= ' ' && c <= '~').collect();
+    let filtered: String = message
+        .chars()
+        .filter(|&c| (' '..='~').contains(&c))
+        .collect();
     let repet = build_repet_table(&filtered);
 
     if repet.is_empty() {
@@ -120,6 +126,6 @@ pub fn kasiski(message: &str) {
     if candidats.is_empty() {
         println!("?");
     } else {
-        println!("Tailles de clé possibles : {:?}", candidats);
+        println!("Tailles de clé possibles : {candidats:?}");
     }
 }

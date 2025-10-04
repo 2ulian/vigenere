@@ -32,19 +32,18 @@ fn get_user_choice() -> u8 {
     let mut choice = String::new();
     loop {
         println!("Entrez votre choix (1 ou 2) : ");
-        match io::stdin().read_line(&mut choice) {
-            Ok(_) => match choice.trim() {
+        if io::stdin().read_line(&mut choice).is_ok() {
+            match choice.trim() {
                 "1" => return 1,
                 "2" => return 2,
                 _ => {
                     println!("Choix invalide. Veuillez entrer 1 ou 2.");
                     choice.clear();
                 }
-            },
-            Err(_) => {
-                println!("Erreur de lecture. Veuillez réessayer.");
-                choice.clear();
             }
+        } else {
+            println!("Erreur de lecture. Veuillez réessayer.");
+            choice.clear();
         }
     }
 }
@@ -52,8 +51,8 @@ fn get_user_choice() -> u8 {
 /// Lit le texte et la clé à partir des fichiers spécifiés.
 ///
 /// # Arguments
-/// text_path - Chemin du fichier contenant le texte.
-/// key_path - Chemin du fichier contenant la clé.
+/// `text_path` - Chemin du fichier contenant le texte.
+/// `key_path` - Chemin du fichier contenant la clé.
 ///
 /// # Retour
 /// Un tuple contenant le texte et la clé sous forme de chaînes de caractères.
@@ -69,8 +68,8 @@ fn files_message_and_key(text_path: &str, key_path: &str) -> io::Result<(String,
 /// text - Le texte à chiffrer.
 /// key - La clé utilisée pour le chiffrement.
 fn display_info(text: &str, key: &str) {
-    println!("Le texte sera: {text}");
-    println!("La clé sera: {key}");
+    println!("\nLe texte sera: \n{text}\n");
+    println!("La clé sera: {key}\n");
 }
 
 /// Demande à l'utilisateur de saisir le message et la clé manuellement.
@@ -102,9 +101,9 @@ fn run_vigenere_demo(message: &str, key: &str) {
     let key = vigenere::resize_key_to_message(message, key);
     let encrypted_message: String = vigenere::vigenere_encrypt(message, &key);
     let decrypted_message: String = vigenere::vigenere_decrypt(&encrypted_message, &key);
-    println!("Message chiffré : {encrypted_message}");
+    println!("Message chiffré : \n{encrypted_message}\n");
     println!(
-        "Message déchiffré (ceci est le texte original retrouvé après déchiffrement avec la clé) : {decrypted_message}"
+        "Message déchiffré (ceci est le texte original retrouvé après déchiffrement avec la clé) : \n{decrypted_message}\n"
     );
     kasiski::kasiski(&encrypted_message);
 }

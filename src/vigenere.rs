@@ -21,7 +21,7 @@ pub fn resize_key_to_message(message: &str, key: &str) -> String {
 ///
 /// # Retour
 /// Un u8 représentant la valeur numérique Vigenère du caractère.
-pub fn char_to_vigenere_num(c: char) -> u8 {
+pub const fn char_to_vigenere_num(c: char) -> u8 {
     let n: u8;
     if c.is_ascii_uppercase() {
         n = c.to_ascii_uppercase() as u8;
@@ -38,7 +38,7 @@ pub fn char_to_vigenere_num(c: char) -> u8 {
 ///
 /// # Retour
 /// Le caractère correspondant au nombre Vigenère.
-pub fn vigenere_num_to_char(mut n: u8) -> char {
+pub const fn vigenere_num_to_char(mut n: u8) -> char {
     n = n % (b'~' - b' ' + 1) + b' ' - 1;
     // Au cas ou n mod 95 = 0
     if n < b' ' {
@@ -63,7 +63,7 @@ pub fn vigenere_encrypt(message: &str, key: &str) -> String {
     let mut encrypted_message = String::new();
     let mut key_iter = key.chars().cycle();
     for cm in message.chars() {
-        if cm >= ' ' && cm <= '~' {
+        if (' '..='~').contains(&cm) {
             let ck = key_iter.next().unwrap();
             encrypted_message.push(vigenere_num_to_char(
                 char_to_vigenere_num(cm) + char_to_vigenere_num(ck),
@@ -84,18 +84,18 @@ pub fn vigenere_encrypt(message: &str, key: &str) -> String {
 /// # Retour
 /// Une chaîne contenant le message déchiffré.
 pub fn vigenere_decrypt(message: &str, key: &str) -> String {
-    let mut de_encrypted_message = String::new();
+    let mut decrypted_message = String::new();
     let mut key_iter = key.chars().cycle();
     for cm in message.chars() {
-        if cm >= ' ' && cm <= '~' {
+        if (' '..='~').contains(&cm) {
             let ck = key_iter.next().unwrap();
-            de_encrypted_message.push(vigenere_num_to_char(
+            decrypted_message.push(vigenere_num_to_char(
                 char_to_vigenere_num(cm) + b'~' - b' ' + 1 - char_to_vigenere_num(ck),
             ));
         } else {
             // laisse les caractères non ascii tels quels
-            de_encrypted_message.push(cm);
+            decrypted_message.push(cm);
         }
     }
-    de_encrypted_message
+    decrypted_message
 }

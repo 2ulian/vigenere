@@ -2,5 +2,11 @@
 name = "vigenere"
 version = "0.1.0"
 edition = "2024"
+description = "Une implémentation du chiffrement de Vigenère en Rust."
+repository = "https://github.com/2ulian/vigenere"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+keywords = ["vigenere", "cipher", "encryption", "cryptography"]
+categories = ["cryptography", "encryption"]
 
 [dependencies]
