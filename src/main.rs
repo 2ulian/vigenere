@@ -12,39 +12,37 @@ fn main() -> io::Result<()> {
         _ => unreachable!("Choix invalide"),
     };
     display_info(&text, &key);
-    fn get_user_choice() -> u8 {
-        println!("Choisissez le mode d'entrée :");
-        println!("1. Utiliser les fichiers data/text.txt et data/key.txt");
-        println!("2. Saisir le message et la clé manuellement");
-        let mut choice = String::new();
-        loop {
-            println!("Entrez votre choix (1 ou 2) : ");
-            match io::stdin().read_line(&mut choice) {
-                Ok(_) => match choice.trim() {
-                    "1" => return 1,
-                    "2" => return 2,
-                    _ => {
-                        println!("Choix invalide. Veuillez entrer 1 ou 2.");
-                        choice.clear();
-                    }
-                },
-                Err(_) => {
-                    println!("Erreur de lecture. Veuillez réessayer.");
-                    choice.clear();
-                }
-            }
-        }
-    }
-
     run_vigenere_demo(&text, &key);
     Ok(())
 }
 
+fn get_user_choice() -> u8 {
+    println!("Choisissez le mode d'entrée :");
+    println!("1. Utiliser les fichiers data/text.txt et data/key.txt");
+    println!("2. Saisir le message et la clé manuellement");
+    let mut choice = String::new();
+    loop {
+        println!("Entrez votre choix (1 ou 2) : ");
+        match io::stdin().read_line(&mut choice) {
+            Ok(_) => match choice.trim() {
+                "1" => return 1,
+                "2" => return 2,
+                _ => {
+                    println!("Choix invalide. Veuillez entrer 1 ou 2.");
+                    choice.clear();
+                }
+            },
+            Err(_) => {
+                println!("Erreur de lecture. Veuillez réessayer.");
+                choice.clear();
+            }
+        }
+    }
+}
+
 fn files_message_and_key(text_path: &str, key_path: &str) -> io::Result<(String, String)> {
     let text = fs::read_to_string(Path::new(text_path))?.trim().to_string();
-    let key = fs::read_to_string(Path::new(key_path))?
-        .trim_end()
-        .to_string();
+    let key = fs::read_to_string(Path::new(key_path))?.trim().to_string();
     Ok((text, key))
 }
 
