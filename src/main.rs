@@ -12,7 +12,7 @@ fn main() -> io::Result<()> {
     println!("La clé sera: {key_file}");
 
     //vigenere_cipher(input_message, input_key);
-    vigenere_cipher(text_file, key_file);
+    vigenere_cipher(&text_file, &key_file);
     Ok(())
 }
 
@@ -31,7 +31,7 @@ fn _input() -> io::Result<(String, String)> {
     // on ne trim pas la clé car on peut vouloir un espace au début pour le chiffrement
 }
 
-fn key_resize(message: String, key: String) -> String {
+fn key_resize(message: &str, key: &str) -> String {
     if key.is_empty() {
         return String::new();
     }
@@ -62,7 +62,7 @@ fn num_to_char(mut n: u8) -> char {
     }
 }
 
-fn encrypt(message: String, key: String) -> String {
+fn encrypt(message: &str, key: &str) -> String {
     let mut encrypted_message: String = String::new();
     for (cm, ck) in message.chars().zip(key.chars()) {
         encrypted_message.push(num_to_char(char_to_num(cm) + char_to_num(ck)));
@@ -70,7 +70,7 @@ fn encrypt(message: String, key: String) -> String {
     encrypted_message
 }
 
-fn de_encrypt(message: String, key: String) -> String {
+fn de_encrypt(message: &str, key: &str) -> String {
     let mut de_encrypted_message: String = String::new();
     for (cm, ck) in message.chars().zip(key.chars()) {
         de_encrypted_message.push(num_to_char(
@@ -81,10 +81,10 @@ fn de_encrypt(message: String, key: String) -> String {
     de_encrypted_message
 }
 
-fn vigenere_cipher(message: String, mut key: String) {
-    key = key_resize(message.clone(), key.clone());
-    let message_crypted: String = encrypt(message.clone(), key.clone());
-    let message_de_encrypted: String = de_encrypt(message_crypted.clone(), key.clone());
+fn vigenere_cipher(message: &str, key: &str) {
+    let key = key_resize(message, key);
+        let message_crypted: String = encrypt(message, &key);
+        let message_de_encrypted: String = de_encrypt(&message_crypted, &key);
     println!("{message_crypted}");
     println!("repassage: {message_de_encrypted}");
     kasiski(&message_crypted);
