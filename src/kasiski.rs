@@ -53,7 +53,7 @@ fn divisors(n: usize) -> Vec<usize> {
 ///
 /// # Retour
 /// Un vecteur de tuples contenant le fragment répété et la distance entre deux occurrences.
-fn build_repet_table(message: &str) -> Vec<(String, usize)> {
+pub fn build_repet_table(message: &str) -> Vec<(String, usize)> {
     let bytes = message.as_bytes();
     let l = bytes.len();
     let mut map: HashMap<&[u8], Vec<usize>> = HashMap::new();

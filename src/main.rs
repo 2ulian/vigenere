@@ -2,8 +2,11 @@ use std::fs;
 use std::io;
 use std::path::Path;
 
-mod kasiski;
 mod vigenere;
+mod kasiski;
+#[cfg(test)]
+mod tests;
+
 
 /// Fonction principale du programme.
 /// Permet à l'utilisateur de choisir le mode d'entrée (fichiers ou manuel), affiche les informations et lance la démonstration du chiffrement Vigenère.
@@ -89,12 +92,12 @@ fn input_message_and_key() -> io::Result<(String, String)> {
     let mut input_key: String = String::new();
 
     while input_message.trim().is_empty() {
-        println!("Entrer le message (il ne doit pas être vide) : ");
+        println!("Entrer le message (ne doit pas être vide) : ");
         io::stdin().read_line(&mut input_message)?;
     }
 
     while input_key.trim().is_empty() {
-        println!("Entrer la clé (il ne doit pas être vide) : ");
+        println!("Entrer la clé (ne doit pas être vide) : ");
         io::stdin().read_line(&mut input_key)?;
     }
 
