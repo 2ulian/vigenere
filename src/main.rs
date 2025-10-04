@@ -87,58 +87,56 @@ fn vigenere_cipher(message: String, mut key: String) {
     let message_de_encrypted: String = de_encrypt(message_crypted.clone(), key.clone());
     println!("{message_crypted}");
     println!("repassage: {message_de_encrypted}");
-    kasiski(message_crypted);
+    kasiski(&message_crypted);
 }
 
-fn kasiski(message: String) {
-    let l: usize = message.len();
-    let mut map: HashMap<String, Vec<u32>> = HashMap::new();
-    let mut start: usize = 0;
-    let mut length: usize = 2;
+pub fn kasiski(message: &str) {
+    let bytes = message.as_bytes();
+    let l = bytes.len();
 
-    while length <= l / 2 {
-        while start + length <= l {
-            let slice: String = message[start..start + length].to_string();
-            map.entry(slice).or_insert(Vec::new()).push(start as u32);
-            start += 1;
-        }
-        length += 1;
-    }
-
-    // nettoyage, au moins trois occurence du motif
-    for (key, value) in map.clone() {
-        if value.len() < 3 {
-            map.remove(&key);
+    // Collecte des positions de tous les motifs de longueur >= 3
+    let mut map: HashMap<&[u8], Vec<usize>> = HashMap::new();
+    for length in 3..=l / 2 {
+        for start in 0..=l - length {
+            let slice = &bytes[start..start + length];
+            map.entry(slice).or_default().push(start);
         }
     }
 
-    let mut c: usize = 0;
-    let mut pgcds: Vec<u32> = Vec::new();
+    // Ne garder que les motifs avec ≥ 3 occurrences
+    map.retain(|_, v| v.len() >= 3);
 
-    for value in map.clone().values() {
-        let mut distance: Vec<u32> = Vec::new();
-        while c + 1 < value.len() {
-            distance.push(value.get(c + 1).copied().unwrap() - value.get(c).copied().unwrap());
-            c += 1;
+    // Distances entre occurrences successives + PGCD de ces distances
+    let mut pgcds: Vec<usize> = Vec::new();
+    for positions in map.values() {
+        let distances: Vec<usize> = positions.windows(2).map(|w| w[1] - w[0]).collect();
+        if let Some(g) = distances.iter().copied().reduce(gcd) {
+            if g > 1 {
+                pgcds.push(g);
+            }
         }
-        if distance.len() == 0 {
-            break;
-        }
-        let mut pgcd = distance.get(0).copied().unwrap();
-        for i in 0..distance.len() {
-            pgcd = euclide(pgcd, distance.get(i + 1).copied().unwrap());
-        }
-        pgcds.push(pgcd);
     }
-    print!("Les tailles de clé probable sont: {pgcds:?}");
+
+    // Compter les facteurs les plus probables
+    let mut freq: HashMap<usize, usize> = HashMap::new();
+    for g in pgcds {
+        *freq.entry(g).or_insert(0) += 1;
+    }
+
+    // Affichage trié par fréquence décroissante
+    let mut items: Vec<(usize, usize)> = freq.into_iter().collect();
+    items.sort_by(|a, b| b.1.cmp(&a.1));
+    println!(
+        "Tailles des clés les plus probables (de la plus probable à la moins probable) : {:?}",
+        items.iter().map(|(k, _)| *k).collect::<Vec<usize>>()
+    );
 }
 
-fn euclide(mut a: u32, mut b: u32) -> u32 {
-    let mut r = a % b;
-    while r != 0 {
+fn gcd(mut a: usize, mut b: usize) -> usize {
+    while b != 0 {
+        let r = a % b;
         a = b;
         b = r;
-        r = a % b;
     }
-    b
+    a
 }
