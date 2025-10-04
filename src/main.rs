@@ -2,11 +2,10 @@ use std::fs;
 use std::io;
 use std::path::Path;
 
-mod vigenere;
 mod kasiski;
 #[cfg(test)]
 mod tests;
-
+mod vigenere;
 
 /// Fonction principale du programme.
 /// Permet à l'utilisateur de choisir le mode d'entrée (fichiers ou manuel), affiche les informations et lance la démonstration du chiffrement Vigenère.
@@ -114,8 +113,10 @@ fn input_message_and_key() -> io::Result<(String, String)> {
 /// key - La clé utilisée pour le chiffrement et le déchiffrement.
 fn run_vigenere_demo(message: &str, key: &str) {
     let key = vigenere::resize_key_to_message(message, key);
-    let encrypted_message: String = vigenere::vigenere_encrypt(message, &key);
-    let decrypted_message: String = vigenere::vigenere_decrypt(&encrypted_message, &key);
+    let encrypted_message: String =
+        vigenere::vigenere_crypt(message, &key, vigenere::VigenereMode::Encrypt);
+    let decrypted_message: String =
+        vigenere::vigenere_crypt(&encrypted_message, &key, vigenere::VigenereMode::Decrypt);
     println!("Message chiffré : \n{encrypted_message}\n");
     println!(
         "Message déchiffré (ceci est le texte original retrouvé après déchiffrement avec la clé) : \n{decrypted_message}\n"

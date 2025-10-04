@@ -7,8 +7,8 @@ mod tests {
     fn test_vigenere_encryption_decryption() {
         let message = "Les crepes suzette de Monsieur Dubreuil sont succulentes.";
         let key = "cle";
-        let encrypted = vigenere::vigenere_encrypt(message, key);
-        let decrypted = vigenere::vigenere_decrypt(&encrypted, key);
+        let encrypted = vigenere::vigenere_crypt(message, key, vigenere::VigenereMode::Encrypt);
+        let decrypted = vigenere::vigenere_crypt(&encrypted, key, vigenere::VigenereMode::Decrypt);
         assert_eq!(message, decrypted);
     }
 
@@ -16,9 +16,9 @@ mod tests {
     fn test_empty_message() {
         let message = "";
         let key = "test";
-        let encrypted = vigenere::vigenere_encrypt(message, key);
+        let encrypted = vigenere::vigenere_crypt(message, key, vigenere::VigenereMode::Encrypt);
         assert_eq!(encrypted, "");
-        let decrypted = vigenere::vigenere_decrypt(&encrypted, key);
+        let decrypted = vigenere::vigenere_crypt(&encrypted, key, vigenere::VigenereMode::Decrypt);
         assert_eq!(decrypted, "");
     }
 
@@ -44,5 +44,4 @@ mod tests {
         let resized_key = vigenere::resize_key_to_message(message, key);
         assert_eq!(resized_key.len(), message.len());
     }
-
 }

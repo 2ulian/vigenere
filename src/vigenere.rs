@@ -49,51 +49,44 @@ pub const fn vigenere_num_to_char(mut n: u8) -> char {
     }
 }
 
-/// Chiffre un message en utilisant le chiffre de Vigenère avec la clé fournie.
-///
-/// # Arguments
-/// message - Le message en clair à chiffrer.
-/// key - La clé à utiliser pour le chiffrement.
-///
-/// # Retour
-/// Une chaîne contenant le message chiffré.
-pub fn vigenere_encrypt(message: &str, key: &str) -> String {
-    let mut encrypted_message = String::new();
-    let mut key_iter = key.chars().cycle();
-    for cm in message.chars() {
-        if (' '..='~').contains(&cm) {
-            let ck = key_iter.next().unwrap();
-            encrypted_message.push(vigenere_num_to_char(
-                char_to_vigenere_num(cm) + char_to_vigenere_num(ck),
-            ));
-        } else {
-            encrypted_message.push(cm);
-        }
-    }
-    encrypted_message
+/// Mode d'opération pour le chiffre de Vigenère.
+pub enum VigenereMode {
+    Encrypt,
+    Decrypt,
 }
 
-/// Déchiffre un message chiffré avec le chiffre de Vigenère en utilisant la clé fournie.
+/// Chiffre ou déchiffre un message en utilisant le chiffre de Vigenère avec la clé fournie.
 ///
 /// # Arguments
-/// message - Le message chiffré à déchiffrer.
-/// key - La clé utilisée pour le déchiffrement.
+/// message - Le message à chiffrer ou déchiffrer.
+/// key - La clé à utiliser.
+/// mode - Le mode d'opération (Encrypt ou Decrypt).
 ///
 /// # Retour
-/// Une chaîne contenant le message déchiffré.
-pub fn vigenere_decrypt(message: &str, key: &str) -> String {
-    let mut decrypted_message = String::new();
+/// Une chaîne contenant le message chiffré ou déchiffré.
+pub fn vigenere_crypt(message: &str, key: &str, mode: VigenereMode) -> String {
+    let mut result_message = String::new();
     let mut key_iter = key.chars().cycle();
     for cm in message.chars() {
         if (' '..='~').contains(&cm) {
             let ck = key_iter.next().unwrap();
-            decrypted_message.push(vigenere_num_to_char(
-                char_to_vigenere_num(cm) + b'~' - b' ' + 1 - char_to_vigenere_num(ck),
-            ));
+            let res = match mode {
+                VigenereMode::Encrypt => {
+                    vigenere_num_to_char(
+                        char_to_vigenere_num(cm) + char_to_vigenere_num(ck),
+                    )
+                }
+                VigenereMode::Decrypt => {
+                    vigenere_num_to_char(
+                        char_to_vigenere_num(cm) + b'~' - b' ' + 1 - char_to_vigenere_num(ck),
+                    )
+                }
+            };
+            result_message.push(res);
         } else {
             // laisse les caractères non ascii tels quels
-            decrypted_message.push(cm);
+            result_message.push(cm);
         }
     }
-    decrypted_message
+    result_message
 }
