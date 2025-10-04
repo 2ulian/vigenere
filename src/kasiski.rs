@@ -37,10 +37,14 @@ pub fn kasiski(message: &str) {
     // Display sorted by decreasing frequency
     let mut items: Vec<(usize, usize)> = freq.into_iter().collect();
     items.sort_by(|a, b| b.1.cmp(&a.1));
-    println!(
-        "Tailles des clés les plus probables (de la plus probable à la moins probable) : {:?}",
-        items.iter().map(|(k, _)| *k).collect::<Vec<usize>>()
-    );
+    if items.is_empty() {
+        println!("Estimation impossible : l'échantillon est trop petit.");
+    } else {
+        println!(
+            "Tailles des clés les plus probables (de la plus probable à la moins probable) : {:?}",
+            items.iter().map(|(k, _)| *k).collect::<Vec<usize>>()
+        );
+    }
 }
 
 pub fn compute_gcd(mut a: usize, mut b: usize) -> usize {

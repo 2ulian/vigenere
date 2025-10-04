@@ -6,13 +6,41 @@ mod kasiski;
 mod vigenere;
 
 fn main() -> io::Result<()> {
-    let (text, key) = read_and_clean_files("data/text.txt", "data/key.txt")?;
+    let (text, key) = match get_user_choice() {
+        1 => files_message_and_key("data/text.txt", "data/key.txt")?,
+        2 => input_message_and_key()?,
+        _ => unreachable!("Choix invalide"),
+    };
     display_info(&text, &key);
+    fn get_user_choice() -> u8 {
+        println!("Choisissez le mode d'entrée :");
+        println!("1. Utiliser les fichiers data/text.txt et data/key.txt");
+        println!("2. Saisir le message et la clé manuellement");
+        let mut choice = String::new();
+        loop {
+            println!("Entrez votre choix (1 ou 2) : ");
+            match io::stdin().read_line(&mut choice) {
+                Ok(_) => match choice.trim() {
+                    "1" => return 1,
+                    "2" => return 2,
+                    _ => {
+                        println!("Choix invalide. Veuillez entrer 1 ou 2.");
+                        choice.clear();
+                    }
+                },
+                Err(_) => {
+                    println!("Erreur de lecture. Veuillez réessayer.");
+                    choice.clear();
+                }
+            }
+        }
+    }
+
     run_vigenere_demo(&text, &key);
     Ok(())
 }
 
-fn read_and_clean_files(text_path: &str, key_path: &str) -> io::Result<(String, String)> {
+fn files_message_and_key(text_path: &str, key_path: &str) -> io::Result<(String, String)> {
     let text = fs::read_to_string(Path::new(text_path))?.trim().to_string();
     let key = fs::read_to_string(Path::new(key_path))?
         .trim_end()
@@ -25,7 +53,7 @@ fn display_info(text: &str, key: &str) {
     println!("La clé sera: {key}");
 }
 
-fn _read_message_and_key() -> io::Result<(String, String)> {
+fn input_message_and_key() -> io::Result<(String, String)> {
     let mut input_message: String = String::new();
     let mut input_key: String = String::new();
 
@@ -35,7 +63,7 @@ fn _read_message_and_key() -> io::Result<(String, String)> {
     println!("Entrer la clé : ");
     io::stdin().read_line(&mut input_key)?;
 
-    Ok((input_message.trim().to_string(), input_key.to_string()))
+    Ok((input_message.trim().to_string(), input_key.trim().to_string())) // Both message and key are trimmed to remove extra spaces and newlines
 }
 
 fn run_vigenere_demo(message: &str, key: &str) {
