@@ -44,4 +44,14 @@ mod tests {
         let resized_key = vigenere::resize_key_to_message(message, key);
         assert_eq!(resized_key.len(), message.len());
     }
+    #[test]
+    fn test_vigenere_key_non_ascii_identity() {
+        let message = "Bonjour!";
+        let key = "é"; // non-ASCII, doit agir comme '~' (identité)
+        let encrypted = vigenere::vigenere_crypt(message, key, vigenere::VigenereMode::Encrypt);
+        let decrypted = vigenere::vigenere_crypt(&encrypted, key, vigenere::VigenereMode::Decrypt);
+        assert_eq!(message, decrypted);
+        // Vérifie aussi que chaque caractère reste inchangé
+        assert_eq!(encrypted, message);
+    }
 }
