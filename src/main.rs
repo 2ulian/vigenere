@@ -3,9 +3,9 @@ use std::fs;
 use std::io;
 use std::path::Path;
 
-fn main() {
-    let text_file: String = fs::read_to_string(Path::new("data/text.txt")).unwrap();
-    let key_file: String = fs::read_to_string(Path::new("data/key.txt")).unwrap();
+fn main() -> io::Result<()> {
+    let text_file: String = fs::read_to_string(Path::new("data/text.txt"))?;
+    let key_file: String = fs::read_to_string(Path::new("data/key.txt"))?;
     let text_file = text_file.trim().to_string();
     let key_file = key_file.trim_end().to_string();
     println!("Le texte sera: {text_file}");
@@ -13,35 +13,30 @@ fn main() {
 
     //vigenere_cipher(input_message, input_key);
     vigenere_cipher(text_file, key_file);
+    Ok(())
 }
 
-fn _input() -> (String, String) {
+fn _input() -> io::Result<(String, String)> {
     let mut input_message: String = String::new();
     let mut input_key: String = String::new();
 
     println!("Entrer le message : ");
-    io::stdin().read_line(&mut input_message).unwrap();
+    io::stdin().read_line(&mut input_message)?;
 
     println!("Entrer la clé : ");
-    io::stdin().read_line(&mut input_key).unwrap();
+    io::stdin().read_line(&mut input_key)?;
 
     // on trim le message car on considère qu'un espace en extremum de message n'est pas voulu
-    (input_message.trim().to_string(), input_key.to_string())
+    Ok((input_message.trim().to_string(), input_key.to_string()))
     // on ne trim pas la clé car on peut vouloir un espace au début pour le chiffrement
 }
 
-fn key_resize(message: String, mut key: String) -> String {
-    let l_message: usize = message.len();
-    let mut l_key: usize = key.len();
-
-    let key_clone = key.clone();
-    let mut test = key_clone.chars().cycle();
-
-    while l_message > l_key {
-        key.push(test.next().unwrap());
-        l_key = key.len();
+fn key_resize(message: String, key: String) -> String {
+    if key.is_empty() {
+        return String::new();
     }
-    key
+
+    key.chars().cycle().take(message.len()).collect()
 }
 
 fn char_to_num(c: char) -> u8 {
