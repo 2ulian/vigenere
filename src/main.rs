@@ -83,8 +83,8 @@ fn de_encrypt(message: &str, key: &str) -> String {
 
 fn vigenere_cipher(message: &str, key: &str) {
     let key = key_resize(message, key);
-        let message_crypted: String = encrypt(message, &key);
-        let message_de_encrypted: String = de_encrypt(&message_crypted, &key);
+    let message_crypted: String = encrypt(message, &key);
+    let message_de_encrypted: String = de_encrypt(&message_crypted, &key);
     println!("{message_crypted}");
     println!("repassage: {message_de_encrypted}");
     kasiski(&message_crypted);
