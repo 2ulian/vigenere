@@ -1,0 +1,346 @@
+commit 655d215a3c5dea43c48a7f5f813092892085e35a
+Author: Sacha Trouvé <sacha.trouve0@gmail.com>
+Date:   Sat Oct 4 21:45:04 2025 +0200
+
+    update rapport
+
+ Julian-Ray-Constanty_Sacha-Trouve_TP1_et2.odt | Bin 306741 -> 0 bytes
+ Julian-Ray-Constanty_Sacha-Trouve_TP1_et2.pdf | Bin 0 -> 472110 bytes
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 2819851d40b271fab7894e31ae1e9cf0db907aab
+Author: Sacha Trouvé <sacha.trouve0@gmail.com>
+Date:   Sat Oct 4 20:36:32 2025 +0200
+
+    ajout rapport
+
+ Julian-Ray-Constanty_Sacha-Trouve_TP1_et2.odt | Bin 0 -> 306741 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit c4f6d40bd18d5eacf8b0a714ba79402da7f732be
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 20:12:21 2025 +0200
+
+    Ajout README
+
+ README.md | 203 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 203 insertions(+)
+
+commit 38d3ae0eb666039fff2a64e26e9eaa2e8c31f2cc
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 18:21:09 2025 +0200
+
+    Traitement des caractère non ascii en clé vigenere
+
+ src/tests.rs    | 10 ++++++++++
+ src/vigenere.rs |  5 ++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
+
+commit 2f2b915bf7488770351bf8b7e6ea8edd2feea41f
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 18:17:20 2025 +0200
+
+    reformatage
+
+ src/vigenere.rs | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
+
+commit 50dba77f27ee808413b3028bcbeb08772e6babc8
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 18:12:37 2025 +0200
+
+    une fonction pour encrypt et decrypt
+
+ src/main.rs     |  9 +++++----
+ src/tests.rs    |  9 ++++-----
+ src/vigenere.rs | 59 +++++++++++++++++++++++++--------------------------------
+ 3 files changed, 35 insertions(+), 42 deletions(-)
+
+commit 3cff96b60decb3c77c354b8744315529aa86933a
+Author: Sacha Trouvé <sacha.trouve0@gmail.com>
+Date:   Sat Oct 4 18:00:31 2025 +0200
+
+    ajout jeux de tests
+
+ src/kasiski.rs |  2 +-
+ src/main.rs    |  9 ++++++---
+ src/tests.rs   | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 55 insertions(+), 4 deletions(-)
+
+commit 4a2c27aceaae7a46b9cdc521f06a7baeb7faa9dd
+Author: Sacha Trouvé <sacha.trouve0@gmail.com>
+Date:   Sat Oct 4 17:14:08 2025 +0200
+
+    check message et clé vide
+
+ src/main.rs     | 20 ++++++++++++++++----
+ src/vigenere.rs |  6 ++----
+ 2 files changed, 18 insertions(+), 8 deletions(-)
+
+commit 59b78eea182bab22f34be77b3b30d558bddb3201
+Author: Sacha Trouvé <sacha.trouve0@gmail.com>
+Date:   Sat Oct 4 16:58:24 2025 +0200
+
+    résolution de warnings
+
+ Cargo.toml      |  6 ++++++
+ src/kasiski.rs  | 16 +++++++++++-----
+ src/main.rs     | 23 +++++++++++------------
+ src/vigenere.rs | 16 ++++++++--------
+ 4 files changed, 36 insertions(+), 25 deletions(-)
+
+commit fb5e0e43e4b0c5d2eb3c641d3c6eba41a4da6ff1
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 15:35:47 2025 +0200
+
+    Ajout des commentaires
+
+ src/kasiski.rs  | 27 +++++++++++++++++++++++++++
+ src/main.rs     | 31 +++++++++++++++++++++++++++++++
+ src/vigenere.rs | 44 +++++++++++++++++++++++++++++++++++++++++---
+ 3 files changed, 99 insertions(+), 3 deletions(-)
+
+commit b8ecf246356c299b3cf417fbce1bd913c69d58e8
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 15:09:30 2025 +0200
+
+    Ajout filtrage des caractère sur kasiski
+
+ src/kasiski.rs | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit 5ee8b667f571ae1fbf54a3001db1be3bd22af421
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 15:08:34 2025 +0200
+
+    On ignore si caractère est un accent
+
+ src/vigenere.rs | 35 ++++++++++++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
+
+commit 6f355ab05f5c47ac5bb70307b427af97e8ce5e82
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 15:03:16 2025 +0200
+
+    kasiski mis a jour pour respect des consignes
+
+ src/kasiski.rs | 109 +++++++++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 74 insertions(+), 35 deletions(-)
+
+commit a51c26d223449fd26f59bdda07537a58f80ab299
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 14:35:37 2025 +0200
+
+    Séparation du menu dans une nouvelle fonction
+
+ src/main.rs | 46 ++++++++++++++++++++++------------------------
+ 1 file changed, 22 insertions(+), 24 deletions(-)
+
+commit 2f966ec82fbde661e74c2da7e0deeeefd6997512
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 14:32:01 2025 +0200
+
+    Ajout d'un trim
+
+ src/main.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 7ba5ee5ce797c834a96f1a54c0d1aec5a2f51525
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 14:31:44 2025 +0200
+
+    Ajout d'un trim
+
+ src/main.rs | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+commit 66ba06a0ace71097e02fb4a3de600e69e69bd3f9
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 14:30:17 2025 +0200
+
+    Ajout d'un menu
+
+ src/kasiski.rs | 12 ++++++++----
+ src/main.rs    | 36 ++++++++++++++++++++++++++++++++----
+ 2 files changed, 40 insertions(+), 8 deletions(-)
+
+commit d1272a9654c3393c996d35dbdcc695db46c61f0c
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 14:21:16 2025 +0200
+
+    Meilleur séparation des fonctions dans le main
+
+ src/kasiski.rs  |  1 -
+ src/main.rs     | 36 +++++++++++++++++++++++-------------
+ src/vigenere.rs |  3 ---
+ 3 files changed, 23 insertions(+), 17 deletions(-)
+
+commit fa2a698498511d4e0229ffd336549ea9745beec2
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 14:12:12 2025 +0200
+
+    Séparation code en plusieurs fichiers
+
+ src/kasiski.rs  |  54 ++++++++++++++++++++++++++
+ src/main.rs     | 118 ++++----------------------------------------------------
+ src/vigenere.rs |  53 +++++++++++++++++++++++++
+ 3 files changed, 114 insertions(+), 111 deletions(-)
+
+commit 61be1ebf3570338be01a91258198380f22e6c151
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 14:10:12 2025 +0200
+
+    Renommer fonctions
+
+ src/main.rs | 36 +++++++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 17 deletions(-)
+
+commit 36c5a8e25c6cbc05211a57d6dfba9acad318538c
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 14:04:20 2025 +0200
+
+    reformated
+
+ src/main.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 535b32468fc69b12943e9228fa399fd78c2f7df0
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 14:02:40 2025 +0200
+
+    Changed String to &str when possible
+
+ src/main.rs | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+commit 37091fe43380c820ad771b920a4aa9fe48a34497
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 11:10:02 2025 +0200
+
+    Correction kasiski
+
+ src/main.rs | 78 ++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 38 insertions(+), 40 deletions(-)
+
+commit 7692017352921f210003af96270a425056ed20b3
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Oct 4 10:47:11 2025 +0200
+
+    Nettoyage des unwraps
+
+ src/main.rs | 31 +++++++++++++------------------
+ 1 file changed, 13 insertions(+), 18 deletions(-)
+
+commit 6afa139354617aa18291c08ed6de623c59cbfc8e
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Fri Oct 3 14:13:49 2025 +0200
+
+    Added kasiski
+
+ data/key.txt  |  2 +-
+ data/text.txt |  2 +-
+ src/main.rs   | 55 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 57 insertions(+), 2 deletions(-)
+
+commit 3092a01a4cd2bfbceca5dd378127b30eec975ec0
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Sep 27 00:19:33 2025 +0200
+
+    Added some clone()
+
+ src/main.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 5ba28774adf04a952fe79edaa4e7820cfe79f793
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Sat Sep 27 00:10:31 2025 +0200
+
+    Added file input
+
+ data/key.txt  |  1 +
+ data/text.txt |  1 +
+ src/main.rs   | 19 +++++++++++++++----
+ 3 files changed, 17 insertions(+), 4 deletions(-)
+
+commit 9a5a42083324336d9a660e3efbbbfd2cecaa09d1
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Fri Sep 26 23:11:33 2025 +0200
+
+    Added uncryption
+
+ src/main.rs | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
+
+commit 4f976c00a4d1b5b546f7036a9f1e52396e47020a
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Fri Sep 26 21:36:59 2025 +0200
+
+    Deleted a useless mut
+
+ src/main.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit a1633f6edbc25b54339cf0346ad16755e8fa6b35
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Fri Sep 26 21:36:07 2025 +0200
+
+    Improved encryption
+
+ src/main.rs | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
+
+commit e5117bbcebaa833b5f015dd801880a204d78782e
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Fri Sep 26 18:54:29 2025 +0200
+
+    updated functions to convert num->char, char->num
+
+ src/main.rs | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
+commit 5b8d807e0de326b37f99a8c12603b84600253565
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Fri Sep 26 18:13:52 2025 +0200
+
+    Crypting works
+
+ src/main.rs | 37 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
+
+commit 5e08e37a4761496e072dee8235141d0a56790263
+Author: Sacha Trouvé <sacha.trouve0@gmail.com>
+Date:   Fri Sep 26 10:46:24 2025 +0200
+
+    input handling
+
+ src/main.rs | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+commit cc03bc85aaf2cd710c4659cd19be21d15c2194d4
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Fri Sep 26 10:34:23 2025 +0200
+
+    Added first input
+
+ src/main.rs | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+commit a7d052bfa6c966fed207892fa7f28951a67bbbf2
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Fri Sep 26 10:19:13 2025 +0200
+
+    Update cargo lock
+
+ Cargo.lock | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+commit cdec3be38d4dd459b16f3d4860f3c4ab53b80fa1
+Author: Julian <rayconstantyjulian@gmail.com>
+Date:   Fri Sep 26 10:11:59 2025 +0200
+
+    Cargo init
+
+ .gitignore  | 1 +
+ Cargo.toml  | 6 ++++++
+ src/main.rs | 3 +++
+ 3 files changed, 10 insertions(+)
